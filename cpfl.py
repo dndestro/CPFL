@@ -3,6 +3,7 @@ import logging
 import os
 import json
 import requests
+from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright, Response
 
 # Configuração de Logging para monitoramento
@@ -14,8 +15,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 FILE_AUTH = "auth.json"
-CPFL_USER = "username"
-CPFL_PASS = "password"
 
 
 class CPFLScraper:
@@ -100,16 +99,6 @@ class CPFLScraper:
                 else:
                     logger.info("Sessão válida! Pulando login.")
 
-                # page.pause()
-
-                # 2. SELEÇÃO DE INSTALAÇÃO (Novo passo das tuas imagens)
-                # logger.info("Selecionando a instalação...")
-                # # Espera o seletor da instalação aparecer
-                # page.wait_for_selector(
-                #     'label[for^="instalacao-"]', timeout=20000)
-                # # O ^ indica que começa com esse texto
-                # page.click('label[for^="instalacao-"]')
-                # page.click('button[id="btn-buscar"]')
                 logger.info("Aguardando histórico de consumo")
                 page.wait_for_selector(
                     'a[title="Histórico de consumo"]')
@@ -128,12 +117,46 @@ class CPFLScraper:
                 browser.close()
 
 
+class HomeAssistant:
+    """Classe para integração com o Home Assistant via API REST."""
+
+    def __init__(self, ha_url: str, token: str):
+        self.ha_url = ha_url
+        self.token = token
+
+    def enviar_para_ha(self, entity_id: str, valor: float) -> Optional[str]:
+        '''Envia o valor para o Home Assistant usando a API REST.'''
+
+        url = f"{self.ha_url}/api/services/input_number/set_value"
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json",
+        }
+        payload = {"entity_id": entity_id, "value": round(valor, 2)}
+        resp = requests.post(url, headers=headers, json=payload, timeout=10)
+        resp.raise_for_status()
+        print(f"HA atualizado: {entity_id} = {valor}")
+        return str(resp.status_code)
+
+
 if __name__ == "__main__":
+    load_dotenv()
+    CPFL_USER = os.getenv("USER_NAME")
+    CPFL_PASS = os.getenv("PASSWORD_CPFL")
+    HA_URL = os.getenv("HA_URL")
+    TOKEN = os.getenv("HA_TOKEN")
+
     scraper = CPFLScraper()
     valor_final = scraper.run()
 
+    ha = HomeAssistant(HA_URL, TOKEN)
+
     if valor_final is not None:
-        # send_to_home_assistant(valor_final)
         print(valor_final)
+        resp = ha.enviar_para_ha("input_number.cpfl_consumo_mensal",
+                                 float(valor_final))
+        print(resp)
+        # No script do SAAE:
+        # enviar_para_ha("input_number.saae_consumo_mensal", consumo_m3)
     else:
         logger.warning("O script terminou sem conseguir capturar o consumo.")

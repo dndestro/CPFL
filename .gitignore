@@ -1,0 +1,4 @@
+*.csv
+.env
+.mypy_cache
+auth.json
