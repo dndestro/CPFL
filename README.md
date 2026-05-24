@@ -14,8 +14,6 @@ No home assistant, deve ser criado um sensor como segue:
 Para rodar o script, criar um arquivo .env com os seguintes dados:
 USER_NAME="seu usuário na CPFL"
 PASSWORD_CPFL="sua senha na cpfl"
-
-# Dados do Home Assistant
 HA_URL=http://IpdoHomeAssistant:8123
 HA_WS_URL=ws://IpdoHomeAssistant:8123/api/websocket
 HA_TOKEN="token criado no Home Assistant"
