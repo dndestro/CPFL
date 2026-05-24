@@ -54,6 +54,7 @@ async def importar(ws, msg_id: int, statistic_id: str, name: str, unit: str, sta
         },
         "stats": stats,
     }
+    print(stats)
     await ws.send(json.dumps(payload))
     resp = json.loads(await ws.recv())
     if resp.get("success"):
