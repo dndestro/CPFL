@@ -2,7 +2,7 @@
 
 No home assistant, deve ser criado um sensor como segue:
 
-'''
+'''yaml
 - sensor:
     - name: "CPFL Consumo Mensal"
       unique_id: "cpfl_consumo_mensal"
