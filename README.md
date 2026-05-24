@@ -12,6 +12,7 @@ No home assistant, deve ser criado um sensor como segue:
       icon: mdi:flash
 
 Para rodar o script, criar um arquivo .env com os seguintes dados:
+
 USER_NAME="seu usuário na CPFL"
 PASSWORD_CPFL="sua senha na cpfl"
 HA_URL=http://IpdoHomeAssistant:8123
