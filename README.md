@@ -11,9 +11,9 @@ sensor:
     device_class: energy
     state_class: measurement
     icon: mdi:flash
-
+```
 Para rodar o script, criar um arquivo .env com os seguintes dados:
-
+```
 USER_NAME="seu usuário na CPFL"
 PASSWORD_CPFL="sua senha na cpfl"
 HA_URL=http://IpdoHomeAssistant:8123
