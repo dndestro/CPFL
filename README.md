@@ -1,16 +1,16 @@
-# Este script busca dados de consumo no site da CPFL e atualiza o Home assistant com estes dados
+# Este script busca dados de consumo no site da CPFL e atualiza o Home Assistant com estes dados
 
-No home assistant, deve ser criado um sensor como segue:
+No Home Assistant, deve ser criado um sensor como segue:
 
-'''yaml
-- sensor:
-    - name: "CPFL Consumo Mensal"
-      unique_id: "cpfl_consumo_mensal"
-      state: "{{ states('input_number.cpfl_consumo_mensal') | float(0) }}"
-      unit_of_measurement: "kWh"
-      device_class: energy
-      state_class: measurement
-      icon: mdi:flash
+```yaml
+sensor:
+  - name: "CPFL Consumo Mensal"
+    unique_id: "cpfl_consumo_mensal"
+    state: "{{ states('input_number.cpfl_consumo_mensal') | float(0) }}"
+    unit_of_measurement: "kWh"
+    device_class: energy
+    state_class: measurement
+    icon: mdi:flash
 
 Para rodar o script, criar um arquivo .env com os seguintes dados:
 
