@@ -28,10 +28,6 @@ STATISTIC_ID_CPFL = "sensor.cpfl_consumo_mensal"
 FUSO_BR = timezone(timedelta(hours=-3))
 
 
-def mes_atual() -> str:
-    return datetime.now(FUSO_BR).strftime("%Y-%m")
-
-
 def inicio_do_mes_iso(mes_str: str) -> str:
     dt = datetime.strptime(mes_str, "%m/%Y").replace(
         tzinfo=FUSO_BR,
@@ -100,7 +96,7 @@ class CPFLScraper:
         """Executa o fluxo principal de automação do browser."""
         with sync_playwright() as p:
 
-            browser = p.chromium.launch(headless=False, devtools=True)
+            browser = p.chromium.launch(headless=True)
 
             # Tenta carregar o contexto existente
             if os.path.exists(FILE_AUTH):
@@ -244,7 +240,7 @@ def main():
     load_dotenv()
 
     global CPFL_USER, CPFL_PASS
-    CPFL_USER = os.getenv("USER_NAME")
+    CPFL_USER = os.getenv("USER_CPFL")
     CPFL_PASS = os.getenv("PASSWORD_CPFL")
     HA_URL = os.getenv("HA_URL")
     HA_WS_URL = os.getenv("HA_WS_URL")
