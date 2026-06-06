@@ -14,7 +14,7 @@ sensor:
 ```
 Para rodar o script, criar um arquivo .env na mesma pasta do arquivo cpfl.py com os seguintes dados:
 ```
-USER_NAME="seu usuário na CPFL"
+USER_CPFL="seu usuário na CPFL"
 PASSWORD_CPFL="sua senha na cpfl"
 HA_URL=http://IpdoHomeAssistant:8123
 HA_WS_URL=ws://IpdoHomeAssistant:8123/api/websocket
